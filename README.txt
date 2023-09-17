@@ -9,3 +9,8 @@ a main() method with a demo of the loader in action.
 
 Build using the Makefile:
     $ make
+
+
+
+Author:
+    Leo Brown
