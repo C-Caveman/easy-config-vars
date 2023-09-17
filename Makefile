@@ -12,4 +12,4 @@ vars: config_loader.c vars.h
 
 
 clean:
-	rm *.o cfg
+	rm *.o cfg example

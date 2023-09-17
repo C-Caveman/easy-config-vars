@@ -6,7 +6,7 @@
 #define STRING_VAR_SIZE 256
 #define MAX_CONFIG_LINE_LEN 512
 // Print detailed info about each line of the config file read.
-#define DEBUG 0
+#define DEBUG 1
 
 // Set variables from a file.
 void configure(char* fname);
@@ -17,10 +17,7 @@ void print_vars();
 #define INT_VARS_LIST \
     f(example_integer_variable) \
     f(another_integer) \
-    f(yet_another_int) \
-    f(and_another_one) \
-    f(thirty_characters_is_the_maximum) \
-    f(aaaand_another_integer)
+    f(thirty_characters_is_the_maximum)
 
 #define FLOAT_VARS_LIST \
     f(example_float_variable) \
@@ -48,5 +45,5 @@ INT_VARS_LIST
 #define f(x) extern float x;
 FLOAT_VARS_LIST
 #undef f
-#define f(x) extern char x [256];
+#define f(x) extern char x [STRING_VAR_SIZE];
 STRING_VARS_LIST

@@ -16,5 +16,6 @@ int main() {
     // Here are some other variables set by data/config_file.txt
     printf("example_float_var   =  %f\n", example_float_variable);
     printf("example_string_var  =  '%s'\n", example_string_variable);
+    printf("lima_bean = '%s'\n", lima_bean);
     return 0;
 }

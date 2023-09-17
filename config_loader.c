@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-// Init the global variables.
+// Define the listed variables.
 #undef f
 #define f(x) int x = 0;
 INT_VARS_LIST
@@ -17,7 +17,7 @@ FLOAT_VARS_LIST
 #define f(x) char x[STRING_VAR_SIZE];
 STRING_VARS_LIST
 
-// Get the global variable names.
+// Make a list of the variable names.
 #undef f
 #define f(x) #x, 
 char INT_VAR_NAMES[NUM_INT_VARS][VAR_NAME_SIZE] = { INT_VARS_LIST };
@@ -27,8 +27,8 @@ char STRING_VAR_NAMES[NUM_STRING_VARS][VAR_NAME_SIZE] = { STRING_VARS_LIST };
 
 // Temporary storage for variable values loaded from file:
 int INT_VARS[NUM_INT_VARS];
-float FLOAT_VARS[NUM_INT_VARS];
-char STRING_VARS[NUM_INT_VARS][STRING_VAR_SIZE];
+float FLOAT_VARS[NUM_FLOAT_VARS];
+char STRING_VARS[NUM_STRING_VARS][STRING_VAR_SIZE];
 // Mark which vars have been changed.
 char INT_VARS_CHANGED[NUM_INT_VARS];
 char FLOAT_VARS_CHANGED[NUM_FLOAT_VARS];
@@ -111,9 +111,9 @@ void configure(char* fname) {
         exit(-1);
     }
     // Mark all variables as unchanged by the config file.
-    memset(INT_VARS_CHANGED, 0, NUM_INT_VARS);
-    memset(FLOAT_VARS_CHANGED, 0, NUM_FLOAT_VARS);
-    memset(STRING_VARS_CHANGED, 0, NUM_STRING_VARS);
+    memset(INT_VARS_CHANGED, 0, NUM_INT_VARS*sizeof(char));
+    memset(FLOAT_VARS_CHANGED, 0, NUM_FLOAT_VARS*sizeof(char));
+    memset(STRING_VARS_CHANGED, 0, NUM_STRING_VARS*sizeof(char));
     //
     // Read each line. Set the appropriate array index with the value:
     //
@@ -124,7 +124,7 @@ void configure(char* fname) {
             break;
         // Read the current line:
         read_line(fp);
-        if (var_name_len == 0 || var_value_len == 0) // Invalid line.
+        if (var_name_len == 0) // Invalid line.
             continue;
         if (DEBUG) printf("\nvar_name:  '%s'\nvar_value: '%s'\n", var_name, var_value);
         // Name of variable:
@@ -155,7 +155,7 @@ void configure(char* fname) {
             if (DEBUG) printf("[float]     %f\n", FLOAT_VARS[index]);
             break;
         case STRING:
-            strncpy(STRING_VARS[index], var_value, STRING_VAR_SIZE);
+            memcpy(STRING_VARS[index], var_value, STRING_VAR_SIZE);
             STRING_VARS_CHANGED[index] = 1;
             if (DEBUG) printf("[string]    %s\n", STRING_VARS[index]);
             break;
@@ -177,7 +177,7 @@ void configure(char* fname) {
     STRING_VARS_LIST
 }
 
-// Print the names of each global variable.
+// Print the names of each variable.
 void print_vars() {
     printf("o=====================================================o\n");
     printf("| Summary of Vars:                                    |\n");
