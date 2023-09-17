@@ -11,10 +11,10 @@ To add this to your own C/C++ project, for each file using the vars:
     
 Then link your program with cfg: "gcc example.c cfg -o example"
                                        ▲         ▲
-                                       |         |
-                                       o----o----o
-                                            |
-               Linked ----------------------o
+                                       │         │
+                                       ╰────┬────╯
+                                            │
+               Linked ──────────────────────╯
                                          
 
 Build using the Makefile:
