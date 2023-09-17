@@ -178,7 +178,7 @@ void configure(char* fname) {
 }
 
 // Print the names of each global variable.
-void print_globals() {
+void print_vars() {
     printf("o=====================================================o\n");
     printf("| Summary of Vars:                                    |\n");
     printf("o-----------------------------------------------------o\n");
@@ -200,23 +200,4 @@ void print_globals() {
     #define f(x) printf("| %-32s = %-16.*s |\n", #x, 16, x);
     STRING_VARS_LIST
     printf("o=====================================================o\n\n");
-}
-
-int main() {
-    printf("\nBefore config:\n");
-    print_globals();
-    //
-    configure("data/config_file.txt");
-    //
-    printf("\nAfter config:\n");
-    print_globals();
-    //
-    configure("data/config_file_2.txt");
-    //
-    printf("\nAfter second config:\n");
-    print_globals();
-    printf("example_integer_var =  %d\n", example_integer_variable);
-    printf("example_float_var   =  %f\n", example_float_variable);
-    printf("example_string_var  =  '%s'\n", example_string_variable);
-    return 0;
 }

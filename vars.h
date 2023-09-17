@@ -1,17 +1,17 @@
-//
-// Variables changable via a config file (or multiple files).
+// Variables you can set via config file(s).
 //
 // See LICENSE file for copyright and license details.
 
 #define VAR_NAME_SIZE 32
 #define STRING_VAR_SIZE 256
 #define MAX_CONFIG_LINE_LEN 512
-
 // Print detailed info about each line of the config file read.
 #define DEBUG 0
 
 // Set variables from a file.
 void configure(char* fname);
+// Print all the variables and their values.
+void print_vars();
 
 // List of variables!
 #define INT_VARS_LIST \

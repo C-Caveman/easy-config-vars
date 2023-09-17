@@ -1,7 +1,12 @@
 # A config file system.
 
-all: config_loader.c vars.h
-	gcc config_loader.c -o cfg
+# An example of how to use the config system.
+example_use: vars
+	gcc example.c cfg -o example
+
+# The config loading system.
+vars: config_loader.c vars.h
+	gcc -c config_loader.c -o cfg
 
 
 
