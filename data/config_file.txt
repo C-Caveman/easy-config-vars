@@ -1,0 +1,25 @@
+# This is a comment!
+# See LICENSE file for copyright and license details.
+
+
+# Integers:
+example_integer_variable = 100     # You can put comments here too!
+another_integer  =    78
+yet_another_int=1276
+
+
+# Floats:
+example_float_variable =  0.999
+floaty_flops =      -9000.010
+
+
+# Strings:
+example_string_variable = Hello world! It's another beautiful day at the C.
+string_bean =             It ain't easy being a bean.
+lima_bean =               Ain't that the dog-gone truth pardner.
+billy_jean =              A bean's gotta do what a bean's gotta do.
+
+
+# Invalid data:
+If the first word isn't a listed var_name, it's invalid.
+Invalid lines get ignored.

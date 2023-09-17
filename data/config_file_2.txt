@@ -1,0 +1,4 @@
+# This is a comment.
+# See LICENSE file for copyright and license details.
+
+example_integer_variable = 256 
