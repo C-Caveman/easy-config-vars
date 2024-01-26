@@ -6,7 +6,7 @@
 #define STRING_VAR_SIZE 256
 #define MAX_CONFIG_LINE_LEN 512
 // Print detailed info about each line of the config file read.
-#define DEBUG 1
+#define DEBUG 0
 
 // Set variables from a file.
 void configure(char* fname);
@@ -15,35 +15,38 @@ void print_vars();
 
 // List of variables!
 #define INT_VARS_LIST \
-    f(example_integer_variable) \
-    f(another_integer) \
-    f(thirty_characters_is_the_maximum)
+    expand(example_integer_variable) \
+    expand(another_integer) \
+    expand(thirty_characters_is_the_maximum)
 
 #define FLOAT_VARS_LIST \
-    f(example_float_variable) \
-    f(floaty_mc_floatpants) \
-    f(floaty_flops)
+    expand(example_float_variable) \
+    expand(floaty_mc_floatpants) \
+    expand(floaty_flops)
 
 #define STRING_VARS_LIST \
-    f(example_string_variable) \
-    f(string_bean) \
-    f(billy_jean) \
-    f(lima_bean)
+    expand(example_string_variable) \
+    expand(string_bean) \
+    expand(billy_jean) \
+    expand(lima_bean)
 
 // Make the enums. (each enum listing has 'enum_' in front of it)
-#undef f
-#define f(x) enum_##x,
+
+#define expand(name) enum_##name,
 enum { INT_VARS_LIST NUM_INT_VARS };
 enum { FLOAT_VARS_LIST NUM_FLOAT_VARS };
 enum { STRING_VARS_LIST NUM_STRING_VARS };
+#undef expand
 
 // Expose all global vars with extern (definitions done config_loader.c).
-#undef f
-#define f(x) extern int x;
+#define expand(name) extern int name;
 INT_VARS_LIST
-#undef f
-#define f(x) extern float x;
+#undef expand
+
+#define expand(name) extern float name;
 FLOAT_VARS_LIST
-#undef f
-#define f(x) extern char x [STRING_VAR_SIZE];
+#undef expand
+
+#define expand(x) extern char x [STRING_VAR_SIZE];
 STRING_VARS_LIST
+#undef expand

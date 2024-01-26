@@ -1,15 +1,15 @@
 # A config file system.
 
 # An example of how to use the config system.
-example_use: vars
-	gcc example.c cfg -o example
+example_use: vars.o
+	gcc example.c vars.o -o example
 
 # The config loading system.
-vars: config_loader.c vars.h
-	gcc -c config_loader.c -o cfg
+vars.o: vars.c vars.h
+	gcc -c vars.c -o vars.o
 
 
 
 
 clean:
-	rm *.o cfg example
+	rm *.o example

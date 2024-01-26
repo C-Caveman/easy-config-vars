@@ -1,4 +1,3 @@
-# Ignore binaries and scripts.
+*.o
 ex
 example
-cfg

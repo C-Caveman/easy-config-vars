@@ -3,19 +3,16 @@
 #include "stdio.h"
 
 int main() {
-    // You can use all vars in vars.h by name.
-    example_integer_variable = 111;
-    printf("\nBefore loading config file: %d\n", example_integer_variable);
-    // You can set any of these vars with a config file.
-    // (only values set in the config file get updated)
-    configure("data/config_file.txt");
-    printf("After loading config file: %d\n\n", example_integer_variable);
-    // You can print a summary of the vars at any time.
-    print_vars();
+    example_integer_variable = 111; //=======================================// The vars are already allocated in vars.c //
 
-    // Here are some other variables set by data/config_file.txt
-    printf("example_float_var   =  %f\n", example_float_variable);
+    printf("\nBefore loading config file: %d\n", example_integer_variable);
+    configure("data/config_file.txt"); //====================================// Set vars from a config file. //
+    printf("After loading config file: %d\n\n", example_integer_variable);
+
+    printf("example_float_var   =  %f\n", example_float_variable); //========// You can floats and strings too! //
     printf("example_string_var  =  '%s'\n", example_string_variable);
-    printf("lima_bean = '%s'\n", lima_bean);
+
+    print_vars(); //=========================================================// Print a summary of the vars at any time. //
+
     return 0;
 }
