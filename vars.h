@@ -14,39 +14,38 @@ void configure(char* fname);
 void print_vars();
 
 // List of variables!
-#define INT_VARS_LIST \
+#define INT_VARS_LIST(expand) \
     expand(example_integer_variable) \
     expand(another_integer) \
     expand(thirty_characters_is_the_maximum)
 
-#define FLOAT_VARS_LIST \
+#define FLOAT_VARS_LIST(expand) \
     expand(example_float_variable) \
     expand(floaty_mc_floatpants) \
     expand(floaty_flops)
 
-#define STRING_VARS_LIST \
+#define STRING_VARS_LIST(expand) \
     expand(example_string_variable) \
     expand(string_bean) \
     expand(billy_jean) \
     expand(lima_bean)
 
-// Make the enums. (each enum listing has 'enum_' in front of it)
+#define VAR_LIST(expand) \
+    INT_VARS_LIST(expand) \
+    FLOAT_VARS_LIST(expand) \
+    STRING_VARS_LIST(expand)
 
-#define expand(name) enum_##name,
-enum { INT_VARS_LIST NUM_INT_VARS };
-enum { FLOAT_VARS_LIST NUM_FLOAT_VARS };
-enum { STRING_VARS_LIST NUM_STRING_VARS };
-#undef expand
+// Make the enums. (each enum listing has 'enum_' in front of it)
+#define TO_ENUM(name) enum_##name, 
+enum { INT_VARS_LIST(TO_ENUM) NUM_INT_VARS };
+enum { FLOAT_VARS_LIST(TO_ENUM) NUM_FLOAT_VARS };
+enum { STRING_VARS_LIST(TO_ENUM) NUM_STRING_VARS };
+#define TOTAL_VARS (NUM_INT_VARS + NUM_FLOAT_VARS + NUM_STRING_VARS)
 
 // Expose all global vars with extern (definitions done config_loader.c).
-#define expand(name) extern int name;
-INT_VARS_LIST
-#undef expand
-
-#define expand(name) extern float name;
-FLOAT_VARS_LIST
-#undef expand
-
-#define expand(x) extern char x [STRING_VAR_SIZE];
-STRING_VARS_LIST
-#undef expand
+#define TO_EXTERN_INT(name) extern int name;
+#define TO_EXTERN_FLOAT(name) extern float name;
+#define TO_EXTERN_STRING(x) extern char x [STRING_VAR_SIZE];
+INT_VARS_LIST(TO_EXTERN_INT)
+FLOAT_VARS_LIST(TO_EXTERN_FLOAT)
+STRING_VARS_LIST(TO_EXTERN_STRING)

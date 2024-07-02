@@ -1,0 +1,29 @@
+
+Before loading config file: 111
+After loading config file: 100
+
+example_float_var   =  0.999000
+example_string_var  =  'Hello world! It's another beautiful day at the C.'
+o=====================================================o
+| Summary of Vars:                                    |
+o-----------------------------------------------------o
+| Integers                                            |
+o=====================================================o
+| example_integer_variable         = 100              |
+| another_integer                  = 78               |
+| thirty_characters_is_the_maximum = 0                |
+o-----------------------------------------------------o
+| Floats                                              |
+o=====================================================o
+| example_float_variable           = 0.999000         |
+| floaty_mc_floatpants             = 101.010101       |
+| floaty_flops                     = -9000.009766     |
+o-----------------------------------------------------o
+| Strings          (first 16 chars)                   |
+o=====================================================o
+| example_string_variable          = Hello world! It' |
+| string_bean                      = It ain't easy be |
+| billy_jean                       = A bean's gotta d |
+| lima_bean                        = Ain't that the d |
+o=====================================================o
+

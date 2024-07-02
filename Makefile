@@ -13,3 +13,6 @@ vars.o: vars.c vars.h
 
 clean:
 	rm *.o example
+
+test: example_use		# Verify the example program's output is the same.
+	bash ./testing/test.sh
