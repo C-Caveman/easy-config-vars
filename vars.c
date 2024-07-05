@@ -26,7 +26,12 @@ char VAR_NAMES[][VAR_NAME_SIZE] = {
 //=============================================================================// GET VAR INDEX BY NAME //
 int get_var_index(char* name, char names[][VAR_NAME_SIZE], int num_names) { //--- (returns -1 on fail)
     int index = -1;
-    for (int i=0; i<num_names; i++) { if (strncmp(name, names[i], VAR_NAME_SIZE) == 0) { index = i; break; } }
+    for (int i=0; i<num_names; i++) {
+        if (strncmp(name, names[i], VAR_NAME_SIZE) == 0) {
+            index = i;
+            break;
+        }
+    }
     return index;
 }
 char c = 0; //============================================// Current line. //
@@ -44,32 +49,24 @@ void read_line(FILE* fp) {
     memset(line, 0, MAX_CONFIG_LINE_LEN*sizeof(char));
     memset(var_name, 0, STRING_VAR_SIZE*sizeof(char));
     memset(value_string, 0, STRING_VAR_SIZE*sizeof(char));
-    if (feof(fp)) { return; }
-    while (len<MAX_CONFIG_LINE_LEN) { //---------------------------- Load the line.
-        c = fgetc(fp);
-        if (feof(fp) || c == '\n') { break; }
+    for (c = fgetc(fp); len<MAX_CONFIG_LINE_LEN  &&  !(feof(fp) || c == '\n'); c = fgetc(fp)) { //---------------------------- Load the line.
         line[len] = c;
         len++;
     }
-    if (line[0] == '#') { return; } // Skip the comment.
-    while (pos<len) { //-------------------------------------------- Trim whitespace.
-        if (!isspace(line[pos])) { break; }
+    if (line[0] == '#') //------------------------------------------ Ignore comments.
+        return;
+    while (pos<len && isspace(line[pos])) //-------------------------------------------- Trim whitespace.
         pos++;
-    }
-    while (pos<len && var_name_len < STRING_VAR_SIZE) { //---------- Get the var_name.
-        if (line[pos] == '=' || isspace(line[pos]) || line[pos] == '#') { break; }
+    while (pos<len && var_name_len < STRING_VAR_SIZE  &&  !(line[pos] == '=' || isspace(line[pos]) || line[pos] == '#')) { //- Get the var_name.
         var_name[var_name_len] = line[pos];
-        var_name_len += 1;
+        var_name_len++;
         pos++;
     }
-    while (pos<len) { //-------------------------------------------- Trim whitespace.
-        if (!isspace(line[pos]) && line[pos] != '=') { break; }
+    while (pos<len  &&  !(!isspace(line[pos]) && line[pos] != '=')) //-------------------------------------------- Trim whitespace.
         pos++;
-    }
-    while (pos<len && value_string_len < STRING_VAR_SIZE) { //--------- Get the value_string.
-        if (line[pos] == '#') { break; }
+    while (pos<len && value_string_len < STRING_VAR_SIZE  && line[pos] != '#') { //--------- Get the value_string.
         value_string[value_string_len] = line[pos];
-        value_string_len += 1;
+        value_string_len++;
         pos++;
     }
 }
@@ -77,26 +74,18 @@ void configure(char* fname) { //===============================================/
     FILE* fp = fopen(fname, "r");
     if (fp == 0) { printf("File %s not found!\n", fname); exit(-1); }
     int index = -1;
-    while (1) { //------------------------------------------------- FOR EACH LINE of "var_name = value_string" 
-        if (feof(fp)) { break; }
-        read_line(fp); //------------------------------------------ Extract var_name and value_string.
+    while (!feof(fp)) { //------------------------------------------------- FOR EACH LINE of "var_name = value_string" 
+        read_line(fp);  //----------------------------------------- var_name = value_string
         if (var_name_len == 0) { continue; } // Invalid line.
         index = get_var_index(var_name, VAR_NAMES, TOTAL_VARS); //- Find index of var_name.
         if (index == -1)
             continue;
-        else if (index < NUM_INT_VARS) {                  //-------------------------------------------// Set the var. //
+        else if (index < NUM_INT_VARS)
             *(int*)VAR_ADDRESSES[index] = atoi(value_string); //--------------------- Set int var.
-            continue;
-        }
-        else if (index < NUM_INT_VARS + NUM_FLOAT_VARS) {
+        else if (index < NUM_INT_VARS + NUM_FLOAT_VARS)
             *(float*)VAR_ADDRESSES[index] = atof(value_string); //------------------- Set float var.
-            continue;
-        }
-        else if (index < NUM_INT_VARS + NUM_FLOAT_VARS + NUM_STRING_VARS) {
-            memcpy((char**)VAR_ADDRESSES[index], value_string, STRING_VAR_SIZE); //- Set string var.
-            continue;
-        }                                                //-------------------------------------------///////////////////
-        if (feof(fp)) { break; }
+        else if (index < NUM_INT_VARS + NUM_FLOAT_VARS + NUM_STRING_VARS)
+            memcpy((char**)VAR_ADDRESSES[index], value_string, STRING_VAR_SIZE); //-- Set string var.
     }
     fclose(fp);
 }
